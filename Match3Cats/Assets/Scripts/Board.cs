@@ -24,7 +24,9 @@ public class Board : MonoBehaviour
             for (int j = 0; j < m_height; j++)
             {
                 Vector2 tempPosn = new Vector2(i, j);
-                Instantiate(m_tile, tempPosn, Quaternion.identity);
+                GameObject gridSquare = Instantiate(m_tile, tempPosn, Quaternion.identity);
+                gridSquare.transform.parent = this.transform;
+                gridSquare.name = "Grid Square(" + i + ", " + j + ")";
             }
         }
     }
