@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +9,14 @@ public class Board : MonoBehaviour
     [SerializeField] int m_width;
     Tile[,] m_grid;
     [SerializeField] GameObject m_tile;
-    
+    [SerializeField] GameObject[] m_pieceArray;
+    [SerializeField] GameObject[,] m_boardArray;
+
     // Start is called before the first frame update
     void Start()
     {
         m_grid = new Tile[m_width, m_height];
+        m_boardArray = new GameObject[m_width, m_height];
         SetUpGrid();
     }
 
@@ -27,6 +30,11 @@ public class Board : MonoBehaviour
                 GameObject gridSquare = Instantiate(m_tile, tempPosn, Quaternion.identity);
                 gridSquare.transform.parent = this.transform;
                 gridSquare.name = "Grid Square(" + i + ", " + j + ")";
+                int pieceToUse = Random.Range(0, m_pieceArray.Length);
+                GameObject piece = Instantiate(m_pieceArray[pieceToUse], tempPosn, Quaternion.identity);
+                piece.transform.parent = this.transform;
+                piece.name = "Dot (" + i + ", " + j + ")";
+                m_boardArray[i, j] = piece;
             }
         }
     }

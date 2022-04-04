@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6757101988497066855}
   - component: {fileID: 9157910846226594605}
+  - component: {fileID: -5180371735039736495}
+  - component: {fileID: 6852014097536078823}
   m_Layer: 0
   m_Name: Dot-DBlue
   m_TagString: Untagged
@@ -84,3 +86,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &-5180371735039736495
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6909341121620926874}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
+--- !u!114 &6852014097536078823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6909341121620926874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55be5bf26c715244796e51009c31c1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
