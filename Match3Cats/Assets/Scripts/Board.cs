@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    [SerializeField] int m_height;
-    [SerializeField] int m_width;
+    public int m_height;
+    public int m_width;
     Tile[,] m_grid;
     [SerializeField] GameObject m_tile;
     [SerializeField] GameObject[] m_pieceArray;
-    [SerializeField] GameObject[,] m_boardArray;
+    public GameObject[,] m_boardArray;
 
     // Start is called before the first frame update
     void Start()

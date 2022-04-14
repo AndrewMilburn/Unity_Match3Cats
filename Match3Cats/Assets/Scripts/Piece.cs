@@ -8,17 +8,28 @@ public class Piece : MonoBehaviour
     Vector2 m_firstTouchPosn;
     Vector2 m_finalTouchPosn;
     float m_swipeAngle = 0;
+    Board m_board;
+    public int m_column;
+    public int m_row;
+    GameObject otherPiece;
+    int m_targetColumn;
+    int m_targetRow;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_board = FindObjectOfType<Board>();
+        m_targetColumn = (int)transform.position.x;
+        m_targetRow = (int)transform.position.y;
+        m_row = m_targetRow;
+        m_column = m_targetColumn;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        m_targetColumn = m_column;
+        m_targetRow = m_row;
     }
 
     private void OnMouseDown()
@@ -36,5 +47,34 @@ public class Piece : MonoBehaviour
     {
         m_swipeAngle = Mathf.Atan2(m_finalTouchPosn.y - m_firstTouchPosn.y, m_finalTouchPosn.x - m_firstTouchPosn.x) * 180 / Mathf.PI;
         Debug.Log(m_swipeAngle);
+        MovePieces();
+    }
+
+    void MovePieces()
+    {
+        if(m_swipeAngle > -45 && m_swipeAngle <= 45 && m_column < m_board.m_width)    // Right Swipe
+        {
+            otherPiece = m_board.m_boardArray[m_column + 1, m_row];
+            otherPiece.GetComponent<Piece>().m_column -= 1;
+            m_column += 1;
+        }
+        else if(m_swipeAngle > 45 && m_swipeAngle <= 135 && m_row < m_board.m_height)   // Up Swipe
+        {
+            otherPiece = m_board.m_boardArray[m_column, m_row + 1];
+            otherPiece.GetComponent<Piece>().m_row -= 1;
+            m_row += 1;
+        }
+        else if((m_swipeAngle > 135 || m_swipeAngle <= -135) && m_column > 0)   // Left Swipe
+        {
+            otherPiece = m_board.m_boardArray[m_column - 1, m_row];
+            otherPiece.GetComponent<Piece>().m_column += 1;
+            m_column -= 1;
+        }
+        else if(m_swipeAngle < -45 && m_swipeAngle >= -135 && m_row > 0)    // Down Swipe
+        {
+            otherPiece = m_board.m_boardArray[m_column, m_row - 1];
+            otherPiece.GetComponent<Piece>().m_row += 1;
+            m_row -= 1;
+        }
     }
 }
