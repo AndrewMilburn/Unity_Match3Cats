@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject m_tile;
     [SerializeField] GameObject[] m_pieceArray;
     public GameObject[,] m_boardArray;
+    public float m_swapDuration;
 
     // Start is called before the first frame update
     void Start()

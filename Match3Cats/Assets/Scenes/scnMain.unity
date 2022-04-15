@@ -263,3 +263,4 @@ MonoBehaviour:
   - {fileID: 2087379562774338457, guid: 7014f74d3dd2e554ca84a39763d7291a, type: 3}
   - {fileID: 2229111019012749427, guid: 78ff09069546d4d4cbb880e218af2858, type: 3}
   - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
+  m_swapDuration: 0.4
