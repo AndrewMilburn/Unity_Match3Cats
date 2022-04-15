@@ -47,7 +47,18 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             m_board.m_boardArray[m_column, m_row] = this.gameObject;
         }
-        
+        if (Mathf.Abs(m_targetRow - transform.position.y) > .1)
+        {
+            Vector2 tempPosn = new Vector2(transform.position.x, Mathf.Lerp(m_startRow, m_targetRow, m_swapTime / m_board.m_swapDuration));
+            transform.position = tempPosn;
+            m_swapTime += Time.deltaTime;
+        }
+        else
+        {
+            Vector2 tempPosn = new Vector2(transform.position.x, m_targetRow);
+            transform.position = tempPosn;
+            m_board.m_boardArray[m_column, m_row] = this.gameObject;
+        }
     }
 
     private void OnMouseDown()
