@@ -5,59 +5,53 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    [Header("Board Variables")]
+    Board m_board;
+    Vector2 m_position;
+    bool m_isMatched = false;
+
+    [Header("Swipe Variables")]
     Vector2 m_firstTouchPosn;
     Vector2 m_finalTouchPosn;
     float m_swipeAngle = 0;
-    Board m_board;
-    public int m_column;
-    public int m_row;
     GameObject otherPiece;
-    int m_targetColumn;
-    int m_targetRow;
-    int m_startColumn;
-    int m_startRow;
-    
+    Vector2 m_targetPosn;
+    Vector2 m_startPosn;
+    Vector2 m_previousPosn;
     float m_swapTime = 0;
+    
+
     
     // Start is called before the first frame update
     void Start()
     {
         m_board = FindObjectOfType<Board>();
-        m_targetColumn = (int)transform.position.x;
-        m_targetRow = (int)transform.position.y;
-        m_row = m_targetRow;
-        m_column = m_targetColumn;
+        m_targetPosn = transform.position;
+        m_position = m_targetPosn;
+        m_previousPosn = m_position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_targetColumn = m_column;
-        m_targetRow = m_row;
+        FindMatches();
+        if (m_isMatched)
+        {
+            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+            mySprite.color = new Color(1f, 1f, 1f, .2f);
+        }
         
-        if(Mathf.Abs(m_targetColumn - transform.position.x) > .1)
+        m_targetPosn = m_position;
+
+        if (m_swapTime < m_board.m_swapDuration)
         {
-            Vector2 tempPosn = new Vector2(Mathf.Lerp(m_startColumn, m_targetColumn, m_swapTime / m_board.m_swapDuration), transform.position.y);
-            transform.position = tempPosn;
+            transform.position = Vector2.Lerp(m_startPosn, m_targetPosn, m_swapTime / m_board.m_swapDuration);
             m_swapTime += Time.deltaTime;
         }
         else
         {
-            Vector2 tempPosn = new Vector2(m_targetColumn, transform.position.y);
-            transform.position = tempPosn;
-            m_board.m_boardArray[m_column, m_row] = this.gameObject;
-        }
-        if (Mathf.Abs(m_targetRow - transform.position.y) > .1)
-        {
-            Vector2 tempPosn = new Vector2(transform.position.x, Mathf.Lerp(m_startRow, m_targetRow, m_swapTime / m_board.m_swapDuration));
-            transform.position = tempPosn;
-            m_swapTime += Time.deltaTime;
-        }
-        else
-        {
-            Vector2 tempPosn = new Vector2(transform.position.x, m_targetRow);
-            transform.position = tempPosn;
-            m_board.m_boardArray[m_column, m_row] = this.gameObject;
+            transform.position = m_targetPosn;
+            m_board.m_boardArray[(int)m_position.x, (int)m_position.y] = this.gameObject;
         }
     }
 
@@ -81,45 +75,91 @@ public class Piece : MonoBehaviour
 
     void MovePieces()
     {
-        if(m_swipeAngle > -45 && m_swipeAngle <= 45 && m_column < m_board.m_width)    // Right Swipe
+        if(m_swipeAngle > -45 && m_swipeAngle <= 45 && m_position.x < m_board.m_width - 1)    // Right Swipe
         {
-            otherPiece = m_board.m_boardArray[m_column + 1, m_row];
-            otherPiece.GetComponent<Piece>().m_startColumn = otherPiece.GetComponent<Piece>().m_column;
-            otherPiece.GetComponent<Piece>().m_column -= 1;
-            m_startColumn = m_column;
-            m_column += 1;
-            m_swapTime = 0;
+            otherPiece = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
+            otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
+            otherPiece.GetComponent<Piece>().m_position = otherPiece.GetComponent<Piece>().m_position + Vector2.left;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
+            m_startPosn = m_position;
+            m_position = m_position + Vector2.right;
+            m_swapTime = 0;
         }
-        else if(m_swipeAngle > 45 && m_swipeAngle <= 135 && m_row < m_board.m_height)   // Up Swipe
+        else if(m_swipeAngle > 45 && m_swipeAngle <= 135 && m_position.y < m_board.m_height - 1)   // Up Swipe
         {
-            otherPiece = m_board.m_boardArray[m_column, m_row + 1];
-            otherPiece.GetComponent<Piece>().m_startRow = otherPiece.GetComponent<Piece>().m_row;
-            otherPiece.GetComponent<Piece>().m_row -= 1;
-            m_startRow = m_row;
-            m_row += 1;
-            m_swapTime = 0;
+            otherPiece = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
+            otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
+            otherPiece.GetComponent<Piece>().m_position = otherPiece.GetComponent<Piece>().m_position + Vector2.down;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
+            m_startPosn = m_position;
+            m_position = m_position + Vector2.up;
+            m_swapTime = 0;
         }
-        else if((m_swipeAngle > 135 || m_swipeAngle <= -135) && m_column > 0)   // Left Swipe
+        else if((m_swipeAngle > 135 || m_swipeAngle <= -135) && (int)m_position.x > 0)   // Left Swipe
         {
-            otherPiece = m_board.m_boardArray[m_column - 1, m_row];
-            otherPiece.GetComponent<Piece>().m_startColumn = otherPiece.GetComponent<Piece>().m_column;
-            otherPiece.GetComponent<Piece>().m_column += 1;
-            m_startColumn = m_column;
-            m_column -= 1;
-            m_swapTime = 0;
+            otherPiece = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
+            otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
+            otherPiece.GetComponent<Piece>().m_position = otherPiece.GetComponent<Piece>().m_position + Vector2.right;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
+            m_startPosn = m_position;
+            m_position = m_position + Vector2.left;
+            m_swapTime = 0;
         }
-        else if(m_swipeAngle < -45 && m_swipeAngle >= -135 && m_row > 0)    // Down Swipe
+        else if(m_swipeAngle < -45 && m_swipeAngle >= -135 && m_position.y > 0)    // Down Swipe
         {
-            otherPiece = m_board.m_boardArray[m_column, m_row - 1];
-            otherPiece.GetComponent<Piece>().m_startRow = otherPiece.GetComponent<Piece>().m_row;
-            otherPiece.GetComponent<Piece>().m_row += 1;
-            m_startRow = m_row;
-            m_row -= 1;
-            m_swapTime = 0;
+            otherPiece = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
+            otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
+            otherPiece.GetComponent<Piece>().m_position = otherPiece.GetComponent<Piece>().m_position + Vector2.up;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
+            m_startPosn = m_position;
+            m_position = m_position + Vector2.down;
+            m_swapTime = 0;
+        }
+
+        StartCoroutine(CheckMove());
+    }
+
+    void FindMatches()
+    {
+        if(m_position.x > 0 && m_position.x < m_board.m_width - 1)
+        {
+            GameObject leftPiece1 = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
+            GameObject rightPiece1 = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
+            if(leftPiece1.tag == this.gameObject.tag && rightPiece1.tag == this.gameObject.tag)
+            {
+                leftPiece1.GetComponent<Piece>().m_isMatched = true;
+                rightPiece1.GetComponent<Piece>().m_isMatched = true;
+                m_isMatched = true;
+            }
+        }
+        if (m_position.y > 0 && m_position.y < m_board.m_height - 1)
+        {
+            GameObject upPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
+            GameObject downPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
+            if (upPiece1.tag == this.gameObject.tag && downPiece1.tag == this.gameObject.tag)
+            {
+                upPiece1.GetComponent<Piece>().m_isMatched = true;
+                downPiece1.GetComponent<Piece>().m_isMatched = true;
+                m_isMatched = true;
+            }
+        }
+    }
+
+    IEnumerator CheckMove()
+    {
+        yield return new WaitForSeconds(m_board.m_checkMoveDelay);
+        if(otherPiece != null)
+        {
+            if(!m_isMatched && !otherPiece.GetComponent<Piece>().m_isMatched)
+            {
+                otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
+                otherPiece.GetComponent<Piece>().m_position = m_position;
+                otherPiece.GetComponent<Piece>().m_swapTime = 0;
+                m_startPosn = m_position;
+                m_position = m_previousPosn;
+                m_swapTime = 0;
+            }
+            otherPiece = null;
         }
     }
 }

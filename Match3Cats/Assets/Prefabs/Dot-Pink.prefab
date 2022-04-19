@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2533232471517234310}
   m_Layer: 0
   m_Name: Dot-Pink
-  m_TagString: Untagged
+  m_TagString: PinkDot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,4 +116,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_column: 0
   m_row: 0
-  m_swapDuration: 0.4
