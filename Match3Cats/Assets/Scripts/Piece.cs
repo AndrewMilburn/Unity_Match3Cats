@@ -19,6 +19,7 @@ public class Piece : MonoBehaviour
     Vector2 m_startPosn;
     Vector2 m_previousPosn;
     float m_swapTime = 0;
+    float m_swipeResist = .5f;
     
 
     
@@ -68,9 +69,11 @@ public class Piece : MonoBehaviour
 
     private void CalculateAngle()
     {
-        m_swipeAngle = Mathf.Atan2(m_finalTouchPosn.y - m_firstTouchPosn.y, m_finalTouchPosn.x - m_firstTouchPosn.x) * 180 / Mathf.PI;
-        Debug.Log(m_swipeAngle);
-        MovePieces();
+        if (Mathf.Abs(m_finalTouchPosn.y - m_firstTouchPosn.y) > m_swipeResist || Mathf.Abs(m_finalTouchPosn.x - m_firstTouchPosn.x) > m_swipeResist)
+        {
+            m_swipeAngle = Mathf.Atan2(m_finalTouchPosn.y - m_firstTouchPosn.y, m_finalTouchPosn.x - m_firstTouchPosn.x) * 180 / Mathf.PI;
+            MovePieces();
+        }
     }
 
     void MovePieces()

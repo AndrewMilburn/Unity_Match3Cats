@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     public GameObject[,] m_boardArray;
     public float m_swapDuration;
     public float m_checkMoveDelay;
+    int m_maxIterations = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,14 @@ public class Board : MonoBehaviour
                 gridSquare.transform.parent = this.transform;
                 gridSquare.name = "Grid Square(" + i + ", " + j + ")";
                 int pieceToUse = Random.Range(0, m_pieceArray.Length);
+                int iteration = 0;
+                while(MatchesAt(i, j, m_pieceArray[pieceToUse]) && iteration < m_maxIterations)
+                {
+                    pieceToUse = Random.Range(0, m_pieceArray.Length);
+                    iteration++;
+                    Debug.Log(iteration);
+                }
+                iteration = 0;
                 GameObject piece = Instantiate(m_pieceArray[pieceToUse], tempPosn, Quaternion.identity);
                 piece.transform.parent = this.transform;
                 piece.name = "Dot (" + i + ", " + j + ")";
@@ -47,5 +56,36 @@ public class Board : MonoBehaviour
         
     }
 
-    
+    bool MatchesAt(int column, int row, GameObject piece)
+    {
+        if(column > 1 && row > 1)
+        {
+            if(m_boardArray[column - 1, row].tag == piece.tag && m_boardArray[column - 2, row].tag == piece.tag)
+            {
+                return true;
+            }
+            if (m_boardArray[column, row - 1].tag == piece.tag && m_boardArray[column, row - 2].tag == piece.tag)
+            {
+                return true;
+            }
+        }
+        else if(column <= 1 || row <= 1)
+        {
+            if(column > 1)
+            {
+                if(m_boardArray[column - 1, row].tag == piece.tag && m_boardArray[column-2, row].tag == piece.tag)
+                {
+                    return true;
+                }
+            }
+            if(row > 1)
+            {
+                if (m_boardArray[column, row - 1].tag == piece.tag && m_boardArray[column, row - 2].tag == piece.tag)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
