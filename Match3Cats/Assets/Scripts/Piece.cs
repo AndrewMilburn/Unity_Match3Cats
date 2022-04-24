@@ -8,7 +8,7 @@ public class Piece : MonoBehaviour
     [Header("Board Variables")]
     Board m_board;
     Vector2 m_position;
-    bool m_isMatched = false;
+    public bool m_isMatched = false;
 
     [Header("Swipe Variables")]
     Vector2 m_firstTouchPosn;
@@ -41,9 +41,10 @@ public class Piece : MonoBehaviour
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(1f, 1f, 1f, .2f);
         }
-        
+
         m_targetPosn = m_position;
 
+        //if(Vector2.Distance(m_startPosn, m_targetPosn) > 0.1f)
         if (m_swapTime < m_board.m_swapDuration)
         {
             transform.position = Vector2.Lerp(m_startPosn, m_targetPosn, m_swapTime / m_board.m_swapDuration);
@@ -124,26 +125,39 @@ public class Piece : MonoBehaviour
 
     void FindMatches()
     {
-        if(m_position.x > 0 && m_position.x < m_board.m_width - 1)
+        if (this != null)
         {
-            GameObject leftPiece1 = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
-            GameObject rightPiece1 = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
-            if(leftPiece1.tag == this.gameObject.tag && rightPiece1.tag == this.gameObject.tag)
+            if (m_position.x > 0 && m_position.x < m_board.m_width - 1)
             {
-                leftPiece1.GetComponent<Piece>().m_isMatched = true;
-                rightPiece1.GetComponent<Piece>().m_isMatched = true;
-                m_isMatched = true;
+                GameObject leftPiece1 = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
+                GameObject rightPiece1 = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
+                if (leftPiece1 != null && rightPiece1 != null)
+                {
+                    Debug.Log("This: " + name + "Left: " + leftPiece1.name + "Right" + rightPiece1.name);
+
+                    if (leftPiece1.tag == this.gameObject.tag && rightPiece1.tag == this.gameObject.tag)
+                    {
+                        leftPiece1.GetComponent<Piece>().m_isMatched = true;
+                        rightPiece1.GetComponent<Piece>().m_isMatched = true;
+                        m_isMatched = true;
+                    }
+                }
             }
-        }
-        if (m_position.y > 0 && m_position.y < m_board.m_height - 1)
-        {
-            GameObject upPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
-            GameObject downPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
-            if (upPiece1.tag == this.gameObject.tag && downPiece1.tag == this.gameObject.tag)
+            if (m_position.y > 0 && m_position.y < m_board.m_height - 1)
             {
-                upPiece1.GetComponent<Piece>().m_isMatched = true;
-                downPiece1.GetComponent<Piece>().m_isMatched = true;
-                m_isMatched = true;
+                GameObject upPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
+                GameObject downPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
+                if (upPiece1 != null && downPiece1 != null)
+                {
+                    Debug.Log("This: " + name + "Down: " + downPiece1.name + "Up: " + upPiece1.name);
+
+                    if (upPiece1.tag == this.gameObject.tag && downPiece1.tag == this.gameObject.tag)
+                    {
+                        upPiece1.GetComponent<Piece>().m_isMatched = true;
+                        downPiece1.GetComponent<Piece>().m_isMatched = true;
+                        m_isMatched = true;
+                    }
+                }
             }
         }
     }
@@ -161,6 +175,10 @@ public class Piece : MonoBehaviour
                 m_startPosn = m_position;
                 m_position = m_previousPosn;
                 m_swapTime = 0;
+            }
+            else
+            {
+                m_board.DestroyAllMatches();
             }
             otherPiece = null;
         }
