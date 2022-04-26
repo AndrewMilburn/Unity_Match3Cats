@@ -7,7 +7,7 @@ public class Piece : MonoBehaviour
 {
     [Header("Board Variables")]
     Board m_board;
-    Vector2 m_position;
+    public Vector2 m_position;
     public bool m_isMatched = false;
 
     [Header("Swipe Variables")]
@@ -16,7 +16,7 @@ public class Piece : MonoBehaviour
     float m_swipeAngle = 0;
     GameObject otherPiece;
     Vector2 m_targetPosn;
-    Vector2 m_startPosn;
+    public Vector2 m_startPosn;
     Vector2 m_previousPosn;
     float m_swapTime = 0;
     float m_swipeResist = .5f;
@@ -30,6 +30,7 @@ public class Piece : MonoBehaviour
         m_targetPosn = transform.position;
         m_position = m_targetPosn;
         m_previousPosn = m_position;
+        m_startPosn = transform.position;
     }
 
     // Update is called once per frame
@@ -44,11 +45,15 @@ public class Piece : MonoBehaviour
 
         m_targetPosn = m_position;
 
-        //if(Vector2.Distance(m_startPosn, m_targetPosn) > 0.1f)
-        if (m_swapTime < m_board.m_swapDuration)
-        {
+        if(Vector2.Distance(m_startPosn, m_targetPosn) > 0.1f)
+        //if (m_swapTime < m_board.m_swapDuration)
+        {            
             transform.position = Vector2.Lerp(m_startPosn, m_targetPosn, m_swapTime / m_board.m_swapDuration);
             m_swapTime += Time.deltaTime;
+            if(m_board.m_boardArray[(int)m_position.x, (int)m_position.y] != this.gameObject)
+            {
+                m_board.m_boardArray[(int)m_position.x, (int)m_position.y] = this.gameObject;
+            }
         }
         else
         {
@@ -133,8 +138,6 @@ public class Piece : MonoBehaviour
                 GameObject rightPiece1 = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
                 if (leftPiece1 != null && rightPiece1 != null)
                 {
-                    Debug.Log("This: " + name + "Left: " + leftPiece1.name + "Right" + rightPiece1.name);
-
                     if (leftPiece1.tag == this.gameObject.tag && rightPiece1.tag == this.gameObject.tag)
                     {
                         leftPiece1.GetComponent<Piece>().m_isMatched = true;
@@ -149,8 +152,6 @@ public class Piece : MonoBehaviour
                 GameObject downPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
                 if (upPiece1 != null && downPiece1 != null)
                 {
-                    Debug.Log("This: " + name + "Down: " + downPiece1.name + "Up: " + upPiece1.name);
-
                     if (upPiece1.tag == this.gameObject.tag && downPiece1.tag == this.gameObject.tag)
                     {
                         upPiece1.GetComponent<Piece>().m_isMatched = true;

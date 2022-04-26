@@ -45,7 +45,9 @@ public class Board : MonoBehaviour
                 GameObject piece = Instantiate(m_pieceArray[pieceToUse], tempPosn, Quaternion.identity);
                 piece.transform.parent = this.transform;
                 piece.name = "Dot (" + i + ", " + j + ")";
+                
                 m_boardArray[i, j] = piece;
+                
             }
         }
     }
@@ -110,5 +112,28 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(DecreaseRow());
+    }
+
+    IEnumerator DecreaseRow()
+    {
+        int nullCount = 0;
+        for (int i = 0; i < m_width; i++)
+        {
+            for (int j = 0; j < m_height; j++)
+            {
+                if (m_boardArray[i, j] == null)
+                {
+                    nullCount++;
+                }
+                else if (nullCount > 0)
+                {
+                    m_boardArray[i, j].GetComponent<Piece>().m_position.y -= nullCount;
+                    m_boardArray[i, j] = null;
+                }
+            }
+            nullCount = 0;
+        }
+        yield return new WaitForSeconds(.3f);
     }
 }
