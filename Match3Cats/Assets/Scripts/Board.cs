@@ -18,9 +18,12 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Board Start");
         m_grid = new Tile[m_width, m_height];
         m_boardArray = new GameObject[m_width, m_height];
+        Debug.Log("Before Set Up");
         SetUpGrid();
+        Debug.Log("After Set Up");
     }
 
     void SetUpGrid()
@@ -39,15 +42,12 @@ public class Board : MonoBehaviour
                 {
                     pieceToUse = Random.Range(0, m_pieceArray.Length);
                     iteration++;
-                    Debug.Log(iteration);
                 }
                 iteration = 0;
                 GameObject piece = Instantiate(m_pieceArray[pieceToUse], tempPosn, Quaternion.identity);
                 piece.transform.parent = this.transform;
-                piece.name = "Dot (" + i + ", " + j + ")";
-                
+                piece.name = "(" + i + ", " + j + ")";
                 m_boardArray[i, j] = piece;
-                
             }
         }
     }
@@ -128,7 +128,7 @@ public class Board : MonoBehaviour
                 }
                 else if (nullCount > 0)
                 {
-                    m_boardArray[i, j].GetComponent<Piece>().m_position.y -= nullCount;
+                    m_boardArray[i, j].GetComponent<Piece>().m_targetPosn.y -= nullCount;
                     m_boardArray[i, j] = null;
                 }
             }
