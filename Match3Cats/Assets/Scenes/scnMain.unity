@@ -265,3 +265,5 @@ MonoBehaviour:
   - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
   m_swapDuration: 0.22
   m_checkMoveDelay: 0.44
+  m_decreaseRowDelay: 2.2
+  m_RefillBoardDelay: 1.67

@@ -129,7 +129,7 @@ public class Piece : MonoBehaviour
             m_swapTime = 0;
         }
 
-        StartCoroutine(CheckMove());
+        StartCoroutine(CoCheckMove());
     }
 
     void FindMatches()
@@ -167,7 +167,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    IEnumerator CheckMove()
+    IEnumerator CoCheckMove()
     {
         yield return new WaitForSeconds(m_board.m_checkMoveDelay);
         if(otherPiece != null)

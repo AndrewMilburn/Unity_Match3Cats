@@ -14,6 +14,8 @@ public class Board : MonoBehaviour
     public float m_swapDuration;
     public float m_checkMoveDelay;
     int m_maxIterations = 100;
+    public float m_decreaseRowDelay;
+    public float m_RefillBoardDelay;
 
     // Start is called before the first frame update
     void Start()
@@ -112,10 +114,10 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        StartCoroutine(DecreaseRow());
+        StartCoroutine(CoDecreaseRow());
     }
 
-    IEnumerator DecreaseRow()
+    IEnumerator CoDecreaseRow()
     {
         int nullCount = 0;
         for (int i = 0; i < m_width; i++)
@@ -134,6 +136,56 @@ public class Board : MonoBehaviour
             }
             nullCount = 0;
         }
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(m_decreaseRowDelay);
+        //StartCoroutine(CoRefillBoard());
     }
+
+    //void ReplenishPieces()
+    //{
+    //    for (int i = 0; i < m_width; i++)
+    //    {
+    //        for (int j = 0; j < m_height; j++)
+    //        {
+    //            if(m_boardArray[i, j] == null)
+    //            {
+    //                Vector2 tempPosn = new Vector2(i, j);
+    //                int pieceToUse = Random.Range(0, m_pieceArray.Length);
+    //                GameObject piece = Instantiate(m_pieceArray[pieceToUse], tempPosn, Quaternion.identity);
+    //                m_boardArray[i, j]= piece;
+    //            }
+    //        }
+    //    }
+    //}
+
+    //bool MatchesOnBoard()
+    //{
+    //    for (int i = 0; i < m_width; i++)
+    //    {
+    //        for (int j = 0; j < m_height; j++)
+    //        {
+    //            if(m_boardArray[i, j] != null)
+    //            {
+    //                if(m_boardArray[i, j].GetComponent<Piece>().m_isMatched)
+    //                {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return false;
+    //}
+
+    //IEnumerator CoRefillBoard()
+    //{
+    //    ReplenishPieces();
+    //    yield return new WaitForSeconds(m_RefillBoardDelay);
+
+    //    while(MatchesOnBoard())
+    //    {
+    //        yield return new WaitForSeconds(m_RefillBoardDelay);
+    //        DestroyAllMatches();
+    //    }
+    //}
+
+
 }
