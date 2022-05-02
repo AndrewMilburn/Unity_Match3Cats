@@ -16,45 +16,38 @@ public class Piece : MonoBehaviour
     float m_swipeAngle = 0;
     GameObject otherPiece;
     public Vector2 m_targetPosn;
-    //public Vector2 m_startPosn;
     Vector2 m_previousPosn;
     float m_swapTime = 0;
     float m_swipeResist = .5f;
+    FindMatches m_findMatches;
     
 
     
     // Start is called before the first frame update
     void Start()
     {
-        //Debug.Log("Piece Start");
         m_board = FindObjectOfType<Board>();
+        m_findMatches = FindObjectOfType<FindMatches>();
         m_targetPosn = transform.position;
         m_position = m_targetPosn;
         m_previousPosn = m_position;
-        //m_startPosn = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        FindMatches();
+        //FindMatches();
         if (m_isMatched)
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(1f, 1f, 1f, .2f);
         }
 
-        //m_targetPosn = m_position;
 
         if(Vector2.Distance(transform.position, m_targetPosn) > 0.1f)
-        //if (m_swapTime < m_board.m_swapDuration)
         {            
             transform.position = Vector2.Lerp(m_position, m_targetPosn, m_swapTime / m_board.m_swapDuration);
             m_swapTime += Time.deltaTime;
-            //if(m_board.m_boardArray[(int)m_position.x, (int)m_position.y] != this.gameObject)
-            //{
-            //    m_board.m_boardArray[(int)m_position.x, (int)m_position.y] = this.gameObject;
-            //}
         }
         else
         {
@@ -63,6 +56,7 @@ public class Piece : MonoBehaviour
             this.name = "(" + m_position.x.ToString() + ", " + m_position.y.ToString() + ")";
             m_swapTime = 0;
             m_position = transform.position;
+            m_findMatches.FindAllMatches();
         }
     }
 
@@ -91,41 +85,33 @@ public class Piece : MonoBehaviour
         if(m_swipeAngle > -45 && m_swipeAngle <= 45 && m_position.x < m_board.m_width - 1)    // Right Swipe
         {
             otherPiece = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
-            //otherPiece.GetComponent<Piece>().m_position = otherPiece.GetComponent<Piece>().m_position;
             otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_position + Vector2.left;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
             m_targetPosn += Vector2.right;
-            //m_position = m_position + Vector2.right;
             m_swapTime = 0;
         }
         else if(m_swipeAngle > 45 && m_swipeAngle <= 135 && m_position.y < m_board.m_height - 1)   // Up Swipe
         {
             otherPiece = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
-            //otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
             otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_position + Vector2.down;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
             m_targetPosn += Vector2.up;
-            //m_position = m_position + Vector2.up;
             m_swapTime = 0;
         }
         else if((m_swipeAngle > 135 || m_swipeAngle <= -135) && (int)m_position.x > 0)   // Left Swipe
         {
             otherPiece = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
-            //otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
             otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_position + Vector2.right;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
             m_targetPosn += Vector2.left;
-            //m_position = m_position + Vector2.left;
             m_swapTime = 0;
         }
         else if(m_swipeAngle < -45 && m_swipeAngle >= -135 && m_position.y > 0)    // Down Swipe
         {
             otherPiece = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
-            //otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
             otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_position + Vector2.up;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
             m_targetPosn += Vector2.down;
-            //m_position = m_position + Vector2.down;
             m_swapTime = 0;
         }
 
@@ -174,10 +160,8 @@ public class Piece : MonoBehaviour
         {
             if(!m_isMatched && !otherPiece.GetComponent<Piece>().m_isMatched)
             {
-                //otherPiece.GetComponent<Piece>().m_startPosn = otherPiece.GetComponent<Piece>().m_position;
                 otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_previousPosn;
                 otherPiece.GetComponent<Piece>().m_swapTime = 0;
-                //m_startPosn = m_position;
                 m_targetPosn = m_previousPosn;
                 m_swapTime = 0;
             }

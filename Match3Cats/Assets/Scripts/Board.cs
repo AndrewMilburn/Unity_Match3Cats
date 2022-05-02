@@ -16,16 +16,15 @@ public class Board : MonoBehaviour
     int m_maxIterations = 100;
     public float m_decreaseRowDelay;
     public float m_RefillBoardDelay;
+    FindMatches m_FindMatches;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Board Start");
         m_grid = new Tile[m_width, m_height];
         m_boardArray = new GameObject[m_width, m_height];
-        Debug.Log("Before Set Up");
         SetUpGrid();
-        Debug.Log("After Set Up");
+        m_FindMatches = FindObjectOfType<FindMatches>();
     }
 
     void SetUpGrid()
@@ -97,6 +96,7 @@ public class Board : MonoBehaviour
     {
         if(m_boardArray[column, row].GetComponent<Piece>().m_isMatched)
         {
+            m_FindMatches.m_currentMatches.Remove(m_boardArray[column, row]);
             Destroy(m_boardArray[column, row]);
             m_boardArray[column, row] = null;
         }
