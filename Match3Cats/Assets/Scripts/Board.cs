@@ -114,31 +114,31 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        StartCoroutine(CoDecreaseRow());
+        //StartCoroutine(CoDecreaseRow());
     }
 
-    IEnumerator CoDecreaseRow()
-    {
-        int nullCount = 0;
-        for (int i = 0; i < m_width; i++)
-        {
-            for (int j = 0; j < m_height; j++)
-            {
-                if (m_boardArray[i, j] == null)
-                {
-                    nullCount++;
-                }
-                else if (nullCount > 0)
-                {
-                    m_boardArray[i, j].GetComponent<Piece>().m_targetPosn.y -= nullCount;
-                    m_boardArray[i, j] = null;
-                }
-            }
-            nullCount = 0;
-        }
-        yield return new WaitForSeconds(m_decreaseRowDelay);
+    //IEnumerator CoDecreaseRow()
+    //{
+        //yield return new WaitForSeconds(m_decreaseRowDelay);
+        //int nullCount = 0;
+        //for (int i = 0; i < m_width; i++)
+        //{
+        //    for (int j = 0; j < m_height; j++)
+        //    {
+        //        if (m_boardArray[i, j] == null)
+        //        {
+        //            nullCount++;
+        //        }
+        //        else if (nullCount > 0)
+        //        {
+        //            m_boardArray[i, j].GetComponent<Piece>().m_targetPosn.y -= nullCount;
+        //            m_boardArray[i, j] = null;
+        //        }
+        //    }
+        //    nullCount = 0;
+        //}
         //StartCoroutine(CoRefillBoard());
-    }
+    //}
 
     //void ReplenishPieces()
     //{

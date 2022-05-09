@@ -17,9 +17,10 @@ public class Piece : MonoBehaviour
     GameObject otherPiece;
     public Vector2 m_targetPosn;
     Vector2 m_previousPosn;
-    float m_swapTime = 0;
+    [SerializeField]float m_swapTime;
     float m_swipeResist = .5f;
     FindMatches m_findMatches;
+    public float m_distance;
     
 
     
@@ -36,27 +37,27 @@ public class Piece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FindMatches();
         if (m_isMatched)
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(1f, 1f, 1f, .2f);
         }
 
+        m_distance = Vector2.Distance(m_targetPosn, transform.position);
 
-        if(Vector2.Distance(transform.position, m_targetPosn) > 0.1f)
-        {            
+        if (Mathf.Abs(m_distance) > 0.05f)
+        {
             transform.position = Vector2.Lerp(m_position, m_targetPosn, m_swapTime / m_board.m_swapDuration);
             m_swapTime += Time.deltaTime;
+            m_findMatches.FindAllMatches();
         }
         else
         {
             transform.position = m_targetPosn;
+            Debug.Log("in lerp" + this);
             m_board.m_boardArray[(int)m_position.x, (int)m_position.y] = this.gameObject;
-            this.name = "(" + m_position.x.ToString() + ", " + m_position.y.ToString() + ")";
             m_swapTime = 0;
             m_position = transform.position;
-            m_findMatches.FindAllMatches();
         }
     }
 
@@ -87,6 +88,7 @@ public class Piece : MonoBehaviour
             otherPiece = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
             otherPiece.GetComponent<Piece>().m_targetPosn = otherPiece.GetComponent<Piece>().m_position + Vector2.left;
             otherPiece.GetComponent<Piece>().m_swapTime = 0;
+            Debug.Log("Other Piece" + otherPiece);
             m_targetPosn += Vector2.right;
             m_swapTime = 0;
         }
@@ -116,42 +118,9 @@ public class Piece : MonoBehaviour
         }
 
         StartCoroutine(CoCheckMove());
+
     }
 
-    void FindMatches()
-    {
-        if (this != null)
-        {
-            if (m_position.x > 0 && m_position.x < m_board.m_width - 1)
-            {
-                GameObject leftPiece1 = m_board.m_boardArray[(int)m_position.x - 1, (int)m_position.y];
-                GameObject rightPiece1 = m_board.m_boardArray[(int)m_position.x + 1, (int)m_position.y];
-                if (leftPiece1 != null && rightPiece1 != null)
-                {
-                    if (leftPiece1.tag == this.gameObject.tag && rightPiece1.tag == this.gameObject.tag)
-                    {
-                        leftPiece1.GetComponent<Piece>().m_isMatched = true;
-                        rightPiece1.GetComponent<Piece>().m_isMatched = true;
-                        m_isMatched = true;
-                    }
-                }
-            }
-            if (m_position.y > 0 && m_position.y < m_board.m_height - 1)
-            {
-                GameObject upPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y + 1];
-                GameObject downPiece1 = m_board.m_boardArray[(int)m_position.x, (int)m_position.y - 1];
-                if (upPiece1 != null && downPiece1 != null)
-                {
-                    if (upPiece1.tag == this.gameObject.tag && downPiece1.tag == this.gameObject.tag)
-                    {
-                        upPiece1.GetComponent<Piece>().m_isMatched = true;
-                        downPiece1.GetComponent<Piece>().m_isMatched = true;
-                        m_isMatched = true;
-                    }
-                }
-            }
-        }
-    }
 
     IEnumerator CoCheckMove()
     {
@@ -167,6 +136,8 @@ public class Piece : MonoBehaviour
             }
             else
             {
+                otherPiece.GetComponent<Piece>().m_previousPosn = otherPiece.GetComponent<Piece>().m_position;
+                m_previousPosn = m_position;
                 m_board.DestroyAllMatches();
             }
             otherPiece = null;

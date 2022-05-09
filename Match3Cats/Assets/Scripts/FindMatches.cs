@@ -6,8 +6,7 @@ public class FindMatches : MonoBehaviour
 {
     Board m_board;
     public List<GameObject> m_currentMatches = new List<GameObject>();
-    [SerializeField]
-    float m_findMatchesDelay;
+    [SerializeField] float m_findMatchesDelay;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +23,7 @@ public class FindMatches : MonoBehaviour
     IEnumerator CoFindAllMatches()
     {
         yield return new WaitForSeconds(m_findMatchesDelay);
+        //int numMatches = 0;
 
         for (int i = 0; i < m_board.m_width; i++)
         {
@@ -44,17 +44,17 @@ public class FindMatches : MonoBehaviour
                                 {
                                     m_currentMatches.Add(leftPiece);
                                 }
-                                    leftPiece.GetComponent<Piece>().m_isMatched = true;
+                                leftPiece.GetComponent<Piece>().m_isMatched = true;
                                 if(!m_currentMatches.Contains(rightPiece))
                                 {
                                     m_currentMatches.Add(rightPiece);
                                 }
-                                    rightPiece.GetComponent<Piece>().m_isMatched = true;
+                                rightPiece.GetComponent<Piece>().m_isMatched = true;
                                 if(!m_currentMatches.Contains(currentPiece))
                                 {
                                     m_currentMatches.Add(currentPiece);
                                 }
-                                    currentPiece.GetComponent<Piece>().m_isMatched = true;
+                                currentPiece.GetComponent<Piece>().m_isMatched = true;
                             }
                         }
                     }

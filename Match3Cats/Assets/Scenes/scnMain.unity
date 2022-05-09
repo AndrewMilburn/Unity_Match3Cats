@@ -263,10 +263,10 @@ MonoBehaviour:
   - {fileID: 2087379562774338457, guid: 7014f74d3dd2e554ca84a39763d7291a, type: 3}
   - {fileID: 2229111019012749427, guid: 78ff09069546d4d4cbb880e218af2858, type: 3}
   - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
-  m_swapDuration: 0.22
-  m_checkMoveDelay: 0.44
-  m_decreaseRowDelay: 2.2
-  m_RefillBoardDelay: 1.67
+  m_swapDuration: 0.6
+  m_checkMoveDelay: 0.8
+  m_decreaseRowDelay: 1.07
+  m_RefillBoardDelay: 1.12
 --- !u!1 &1811389979
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_currentMatches: []
-  m_findMatchesDelay: 0
+  m_findMatchesDelay: 0.5
 --- !u!4 &1811389981
 Transform:
   m_ObjectHideFlags: 0
