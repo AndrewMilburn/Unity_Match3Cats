@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.28813636, g: 0.3042415, b: 0.3301887, a: 0}
+  m_BackGroundColor: {r: 0.0093449615, g: 0.18790576, b: 0.3962264, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -251,23 +251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb27d45e9188b3748878148fe51860e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_height: 10
-  m_width: 7
-  m_tile: {fileID: 44516567053507422, guid: 3fd5e7d5fa512cc47914dea705da1248, type: 3}
-  m_pieceArray:
-  - {fileID: 6909341121620926874, guid: 0da4827d001898f4fb1ad0c84db07423, type: 3}
-  - {fileID: 2511800788150113904, guid: 81a566515cea8d444b80d2968d8477b7, type: 3}
-  - {fileID: 2572666054880404547, guid: 916fd092eb875424084cdb07580ba234, type: 3}
-  - {fileID: 1757505556933835333, guid: c039f1230c613424db50d8ad06451c43, type: 3}
-  - {fileID: 8137582797834409455, guid: c4d8da891c9527449ba520ae16bbe11c, type: 3}
-  - {fileID: 2087379562774338457, guid: 7014f74d3dd2e554ca84a39763d7291a, type: 3}
-  - {fileID: 2229111019012749427, guid: 78ff09069546d4d4cbb880e218af2858, type: 3}
-  - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
-  m_swapDuration: 0.3
-  m_checkMoveDelay: 0.6
-  m_decreaseRowDelay: 0.8
-  m_RefillBoardDelay: 1
-  m_currentState: 1
+  boardHeight: 10
+  boardWidth: 7
+  tile: {fileID: 44516567053507422, guid: 3fd5e7d5fa512cc47914dea705da1248, type: 3}
 --- !u!1 &1811389979
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,8 +283,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61f88a84183d9440ad490ed8576a319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_currentMatches: []
-  m_findMatchesDelay: 0.4
 --- !u!4 &1811389981
 Transform:
   m_ObjectHideFlags: 0
