@@ -253,6 +253,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardHeight: 10
   boardWidth: 7
+  pieces:
+  - {fileID: 6909341121620926874, guid: 0da4827d001898f4fb1ad0c84db07423, type: 3}
+  - {fileID: 2511800788150113904, guid: 81a566515cea8d444b80d2968d8477b7, type: 3}
+  - {fileID: 2572666054880404547, guid: 916fd092eb875424084cdb07580ba234, type: 3}
+  - {fileID: 1757505556933835333, guid: c039f1230c613424db50d8ad06451c43, type: 3}
+  - {fileID: 8137582797834409455, guid: c4d8da891c9527449ba520ae16bbe11c, type: 3}
+  - {fileID: 2087379562774338457, guid: 7014f74d3dd2e554ca84a39763d7291a, type: 3}
+  - {fileID: 2229111019012749427, guid: 78ff09069546d4d4cbb880e218af2858, type: 3}
+  - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
   tile: {fileID: 44516567053507422, guid: 3fd5e7d5fa512cc47914dea705da1248, type: 3}
 --- !u!1 &1811389979
 GameObject:
