@@ -8,6 +8,7 @@ public class Board : MonoBehaviour {
     public int boardWidth;
     public GameObject[] pieces;
     [SerializeField] GameObject tile;
+    public GameObject[,] pieceGrid;
 
     //Start is called before the first frame update
     void Start() {
