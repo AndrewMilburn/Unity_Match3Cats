@@ -27,6 +27,8 @@ public class Board : MonoBehaviour {
                 GameObject piece = Instantiate(pieces[pieceToUse], tempPosn, Quaternion.identity);
                 piece.transform.parent = transform;
                 piece.name = "Dot(" + column + ", " + row + ")";
+                pieceGrid[column, row] = piece;
+                //Debug.Log(piece.name + pieceGrid[column, row].GetComponent<Piece>().tag);
             }
         }
     }
