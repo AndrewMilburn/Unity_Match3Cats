@@ -13,4 +13,15 @@ public class Piece : MonoBehaviour {
         firstTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(firstTouchPosn);
     }
+
+    private void OnMouseUp() {
+        finalTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(finalTouchPosn);
+        CalculateAngle();
+    }
+
+    private void CalculateAngle() {
+        swipeAngle = Mathf.Atan2(finalTouchPosn.y - firstTouchPosn.y, finalTouchPosn.x - firstTouchPosn.x) * 180 / Mathf.PI;
+        Debug.Log(swipeAngle);
+    }
 }
