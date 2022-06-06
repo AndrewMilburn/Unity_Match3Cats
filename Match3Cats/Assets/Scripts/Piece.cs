@@ -17,7 +17,7 @@ public class Piece : MonoBehaviour
     [SerializeField]int targetRow;
     Vector2 tempPosn;
     [SerializeField] float timeToSwap = 0.5f;
-    [SerializeField] float moveTime = 0f;
+    [SerializeField] float moveTime;
 
 
     private void Start()
@@ -37,13 +37,12 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             moveTime += Time.deltaTime;
         }
-        else
+        else if(targetCol != pieceCol)
         {
             tempPosn = new Vector2(targetCol, targetRow);
             transform.position = tempPosn;
             pieceCol = targetCol;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
-            moveTime = 0f;
         }
         if (Mathf.Abs(targetRow - transform.position.y) > 0.1f)
         {
@@ -51,13 +50,12 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             moveTime += Time.deltaTime;
         }
-        else
+        else if (targetRow != pieceRow)
         {
             tempPosn = new Vector2(targetCol, targetRow);
             transform.position = tempPosn;
             pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
-            moveTime = 0f;
         }
     }
 
@@ -71,6 +69,7 @@ public class Piece : MonoBehaviour
     {
         finalTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(finalTouchPosn);
+
         if (Vector2.Distance(firstTouchPosn, finalTouchPosn) > swipeResist)
         {
             CalculateAngle();
@@ -90,6 +89,7 @@ public class Piece : MonoBehaviour
         {  // Right Swipe
             swapPiece = board.pieceArray[pieceCol + 1, pieceRow];
             swapPiece.GetComponent<Piece>().targetCol = pieceCol;
+            swapPiece.GetComponent<Piece>().moveTime = 0f;
             targetCol = pieceCol + 1;
             moveTime = 0;
         }
@@ -97,6 +97,7 @@ public class Piece : MonoBehaviour
         {  // Up Swipe
             swapPiece = board.pieceArray[pieceCol, pieceRow + 1];
             swapPiece.GetComponent<Piece>().targetRow = pieceRow;
+            swapPiece.GetComponent<Piece>().moveTime = 0f;
             targetRow = pieceRow + 1;
             moveTime = 0;
         }
@@ -104,6 +105,7 @@ public class Piece : MonoBehaviour
         {  // Left Swipe
             swapPiece = board.pieceArray[pieceCol - 1, pieceRow];
             swapPiece.GetComponent<Piece>().targetCol = pieceCol;
+            swapPiece.GetComponent<Piece>().moveTime = 0f;
             targetCol = pieceCol - 1;
             moveTime = 0;
         }
@@ -111,6 +113,7 @@ public class Piece : MonoBehaviour
         {  // Down Swipe
             swapPiece = board.pieceArray[pieceCol, pieceRow - 1];
             swapPiece.GetComponent<Piece>().targetRow = pieceRow;
+            swapPiece.GetComponent<Piece>().moveTime = 0f;
             targetRow = pieceRow - 1;
             moveTime = 0;
         }
