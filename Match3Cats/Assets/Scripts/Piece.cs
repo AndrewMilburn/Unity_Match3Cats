@@ -18,6 +18,8 @@ public class Piece : MonoBehaviour
     Vector2 tempPosn;
     [SerializeField] float timeToSwap = 0.5f;
     [SerializeField] float moveTime;
+    FindMatches findMatches;
+    public bool isMatched = false;
 
 
     private void Start()
@@ -27,10 +29,18 @@ public class Piece : MonoBehaviour
         targetRow = (int)transform.position.y;
         pieceCol = targetCol;
         pieceRow = targetRow;
+        findMatches = FindObjectOfType<FindMatches>();
     }
 
     private void Update()
     {
+        findMatches.FindAllMatches();
+        if(isMatched)
+        {
+            SpriteRenderer pieceSprite = GetComponent<SpriteRenderer>();
+            pieceSprite.color = new Color(1f, 1f, 1f, 1f);
+        }
+
         if(Mathf.Abs(targetCol - transform.position.x) > 0.1f)
         {
             tempPosn = new Vector2(Mathf.Lerp((float)pieceCol, (float)targetCol, moveTime / timeToSwap), pieceRow);

@@ -292,6 +292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61f88a84183d9440ad490ed8576a319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMatches: []
+  findMatchDelay: 0.5
 --- !u!4 &1811389981
 Transform:
   m_ObjectHideFlags: 0
