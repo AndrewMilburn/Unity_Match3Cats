@@ -114,5 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55be5bf26c715244796e51009c31c1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_column: 0
-  m_row: 0
+  pieceCol: 0
+  pieceRow: 0
+  targetCol: 0
+  targetRow: 0
+  timeToSwap: 0.3
+  moveTime: 0
+  isMatched: 0

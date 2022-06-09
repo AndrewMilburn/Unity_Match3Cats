@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
-{ 
+{
+    [Header("Board Variables")]
+    public bool isMatched = false;
     Vector2 firstTouchPosn;
     Vector2 finalTouchPosn;
     float swipeAngle = 0;
@@ -12,14 +14,21 @@ public class Piece : MonoBehaviour
     Board board;
     [SerializeField]int pieceCol;
     [SerializeField]int pieceRow;
-    GameObject swapPiece;
-    [SerializeField]int targetCol;
-    [SerializeField]int targetRow;
-    Vector2 tempPosn;
-    [SerializeField] float timeToSwap = 0.5f;
-    [SerializeField] float moveTime;
     FindMatches findMatches;
-    public bool isMatched = false;
+    
+
+    [Header("Swipe Variables")]
+    [SerializeField] float timeToSwap;
+    [SerializeField] float moveTime;
+    [SerializeField] float checkDelay;
+    int targetCol;
+    int targetRow;
+    GameObject swapPiece;
+    Vector2 tempPosn;
+    int previousColumn;
+    int previousRow;
+
+
 
 
     private void Start()
@@ -30,18 +39,19 @@ public class Piece : MonoBehaviour
         pieceCol = targetCol;
         pieceRow = targetRow;
         findMatches = FindObjectOfType<FindMatches>();
+        previousColumn = pieceCol;
+        previousRow = pieceRow;
     }
 
     private void Update()
     {
-        findMatches.FindAllMatches();
-        if(isMatched)
+        if (isMatched)
         {
             SpriteRenderer pieceSprite = GetComponent<SpriteRenderer>();
             pieceSprite.color = new Color(1f, 1f, 1f, 1f);
         }
 
-        if(Mathf.Abs(targetCol - transform.position.x) > 0.1f)
+        if (Mathf.Abs(targetCol - transform.position.x) > 0.01f)
         {
             tempPosn = new Vector2(Mathf.Lerp((float)pieceCol, (float)targetCol, moveTime / timeToSwap), pieceRow);
             transform.position = tempPosn;
@@ -53,8 +63,9 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             pieceCol = targetCol;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
+            findMatches.FindAllMatches();
         }
-        if (Mathf.Abs(targetRow - transform.position.y) > 0.1f)
+        if (Mathf.Abs(targetRow - transform.position.y) > 0.01f)
         {
             tempPosn = new Vector2(pieceCol, Mathf.Lerp((float)pieceRow, (float)targetRow, moveTime / timeToSwap));
             transform.position = tempPosn;
@@ -66,6 +77,7 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
+            findMatches.FindAllMatches();
         }
     }
 
@@ -95,7 +107,7 @@ public class Piece : MonoBehaviour
 
     void MovePieces()
     {
-        if (swipeAngle > -45 && swipeAngle <= 45 && pieceCol < board.boardWidth)
+        if (swipeAngle > -45 && swipeAngle <= 45 && pieceCol < board.boardWidth - 1)
         {  // Right Swipe
             swapPiece = board.pieceArray[pieceCol + 1, pieceRow];
             swapPiece.GetComponent<Piece>().targetCol = pieceCol;
@@ -103,7 +115,7 @@ public class Piece : MonoBehaviour
             targetCol = pieceCol + 1;
             moveTime = 0;
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && pieceRow < board.boardHeight)
+        else if (swipeAngle > 45 && swipeAngle <= 135 && pieceRow < board.boardHeight - 1)
         {  // Up Swipe
             swapPiece = board.pieceArray[pieceCol, pieceRow + 1];
             swapPiece.GetComponent<Piece>().targetRow = pieceRow;
@@ -126,6 +138,18 @@ public class Piece : MonoBehaviour
             swapPiece.GetComponent<Piece>().moveTime = 0f;
             targetRow = pieceRow - 1;
             moveTime = 0;
+        }
+    }
+
+    IEnumerator CheckMove()
+    {
+        yield return new WaitForSeconds(checkDelay);
+        if(swapPiece != null)
+        {
+            if(isMatched && swapPiece.GetComponent<Piece>().isMatched)
+            {
+
+            }
         }
     }
 }
