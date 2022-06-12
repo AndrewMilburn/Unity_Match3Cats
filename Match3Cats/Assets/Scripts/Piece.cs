@@ -64,6 +64,7 @@ public class Piece : MonoBehaviour
             pieceCol = targetCol;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
             findMatches.FindAllMatches();
+            moveTime = 0;
         }
         if (Mathf.Abs(targetRow - transform.position.y) > 0.01f)
         {
@@ -78,6 +79,7 @@ public class Piece : MonoBehaviour
             pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
             findMatches.FindAllMatches();
+            moveTime = 0;
         }
     }
 
@@ -139,6 +141,7 @@ public class Piece : MonoBehaviour
             targetRow = pieceRow - 1;
             moveTime = 0;
         }
+        StartCoroutine(CheckMove());
     }
 
     IEnumerator CheckMove()
@@ -146,10 +149,17 @@ public class Piece : MonoBehaviour
         yield return new WaitForSeconds(checkDelay);
         if(swapPiece != null)
         {
-            if(isMatched && swapPiece.GetComponent<Piece>().isMatched)
+            if(!isMatched && !swapPiece.GetComponent<Piece>().isMatched)
             {
-
+                Debug.Log("Swap Piece " + swapPiece.GetComponent<Piece>().name);
+                Debug.Log("This Piece " + name);
+                
+                swapPiece.GetComponent<Piece>().targetCol = pieceCol;
+                swapPiece.GetComponent<Piece>().targetRow = pieceRow;
+                targetRow = previousRow;
+                targetCol = previousColumn;
             }
+            swapPiece = null;
         }
     }
 }
