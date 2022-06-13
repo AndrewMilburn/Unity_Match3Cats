@@ -12,8 +12,8 @@ public class Piece : MonoBehaviour
     float swipeAngle = 0;
     float swipeResist = 0.5f;
     Board board;
-    [SerializeField]int pieceCol;
-    [SerializeField]int pieceRow;
+    public int pieceCol;
+    public int pieceRow;
     FindMatches findMatches;
     
 
@@ -158,6 +158,10 @@ public class Piece : MonoBehaviour
                 swapPiece.GetComponent<Piece>().targetRow = pieceRow;
                 targetRow = previousRow;
                 targetCol = previousColumn;
+            }
+            else
+            {
+                board.DestroyAllMatches();
             }
             swapPiece = null;
         }

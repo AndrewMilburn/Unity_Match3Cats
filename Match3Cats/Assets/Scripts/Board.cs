@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     public GameObject[] pieces;
     [SerializeField] GameObject tile;
     public GameObject[,] pieceArray;
+    [SerializeField] float decreaseRowDelay;
 
     //Start is called before the first frame update
     void Start()
@@ -77,5 +78,50 @@ public class Board : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void DestroyMatchesAt(int col, int row)
+    {
+        if (pieceArray[col, row].GetComponent<Piece>().isMatched)
+        {
+            Destroy(pieceArray[col, row]);
+            pieceArray[col, row] = null;
+        }
+    }
+
+    public void DestroyAllMatches()
+    {
+        for(int row = 0; row < boardHeight; row++)
+        {
+            for (int col = 0; col < boardWidth; col++)
+            {
+                if (pieceArray[col, row] != null)
+                {
+                    DestroyMatchesAt(col, row);
+                }
+            }
+        }
+        StartCoroutine(DecreaseRow());
+    }
+
+    IEnumerator DecreaseRow()
+    {
+        int nullCount = 0;
+        for (int col = 0; col < boardWidth; col++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if(pieceArray[col, row] == null)
+                {
+                    nullCount++;
+                }
+                else if(nullCount > 0)
+                {
+                    pieceArray[col, row].GetComponent<Piece>().pieceRow -= nullCount;
+                }
+            }
+            nullCount = 0;
+        }
+        yield return new WaitForSeconds(decreaseRowDelay);
     }
 }
