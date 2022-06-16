@@ -117,7 +117,8 @@ public class Board : MonoBehaviour
                 }
                 else if(nullCount > 0)
                 {
-                    pieceArray[col, row].GetComponent<Piece>().pieceRow -= nullCount;
+                    pieceArray[col, row].GetComponent<Piece>().targetRow -= nullCount;
+                    pieceArray[col, row] = null;
                 }
             }
             nullCount = 0;

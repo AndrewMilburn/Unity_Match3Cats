@@ -21,8 +21,8 @@ public class Piece : MonoBehaviour
     [SerializeField] float timeToSwap;
     [SerializeField] float moveTime;
     [SerializeField] float checkDelay;
-    int targetCol;
-    int targetRow;
+    public int targetCol;
+    public int targetRow;
     GameObject swapPiece;
     Vector2 tempPosn;
     int previousColumn;
@@ -78,7 +78,7 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
-            findMatches.FindAllMatches();
+
             moveTime = 0;
         }
     }
