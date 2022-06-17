@@ -264,6 +264,7 @@ MonoBehaviour:
   - {fileID: 4385543037683580380, guid: 8d019da7df9512b4c902201a19193df4, type: 3}
   tile: {fileID: 44516567053507422, guid: 3fd5e7d5fa512cc47914dea705da1248, type: 3}
   decreaseRowDelay: 0.3
+  refillDelay: 1
 --- !u!1 &1811389979
 GameObject:
   m_ObjectHideFlags: 0

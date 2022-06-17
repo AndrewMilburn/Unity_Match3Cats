@@ -10,11 +10,15 @@ public class FindMatches : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("In FindMatches:Start");
+
         board = FindObjectOfType<Board>();
     }
 
     IEnumerator CoFindAllMatches()
     {
+        Debug.Log("In CoFindAllMatches");
+
         yield return new WaitForSeconds(findMatchDelay);
 
         for(int row = 0;row < board.boardHeight; row++)
@@ -59,6 +63,8 @@ public class FindMatches : MonoBehaviour
 
     public void FindAllMatches()
     {
+        Debug.Log("In FindAllMatches");
+
         StartCoroutine(CoFindAllMatches());
     }
 }

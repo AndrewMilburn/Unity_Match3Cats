@@ -12,16 +12,19 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject tile;
     public GameObject[,] pieceArray;
     [SerializeField] float decreaseRowDelay;
+    [SerializeField] float refillDelay;
 
     //Start is called before the first frame update
     void Start()
     {
+        Debug.Log("In Board:Start");
         pieceArray = new GameObject[boardWidth, boardHeight];
         SetUpGrid();
     }
 
     void SetUpGrid()
     {
+        Debug.Log("In Setup");
         for (int row = 0; row < boardHeight; row++)
         {
             for (int column = 0; column < boardWidth; column++)
@@ -49,6 +52,7 @@ public class Board : MonoBehaviour
 
     bool MatchesAt(int col, int row, GameObject piece)
     {
+        Debug.Log("In MatchesAt");
         if (col > 1 && row > 1)
         {
             if (pieceArray[col - 1, row].tag == piece.tag && pieceArray[col - 2, row].tag == piece.tag)
@@ -82,6 +86,8 @@ public class Board : MonoBehaviour
 
     void DestroyMatchesAt(int col, int row)
     {
+        Debug.Log("In DestroyMatchesAt");
+
         if (pieceArray[col, row].GetComponent<Piece>().isMatched)
         {
             Destroy(pieceArray[col, row]);
@@ -91,7 +97,9 @@ public class Board : MonoBehaviour
 
     public void DestroyAllMatches()
     {
-        for(int row = 0; row < boardHeight; row++)
+        Debug.Log("In DestroyAllMatches");
+
+        for (int row = 0; row < boardHeight; row++)
         {
             for (int col = 0; col < boardWidth; col++)
             {
@@ -106,6 +114,8 @@ public class Board : MonoBehaviour
 
     IEnumerator DecreaseRow()
     {
+        Debug.Log("In DecreaseRow");
+
         int nullCount = 0;
         for (int col = 0; col < boardWidth; col++)
         {
@@ -124,5 +134,59 @@ public class Board : MonoBehaviour
             nullCount = 0;
         }
         yield return new WaitForSeconds(decreaseRowDelay);
+        StartCoroutine(RefillBoard());
+    }
+
+    void ReplenishPieces()
+    {
+        Debug.Log("In ReplenishPieces");
+
+        for (int col = 0; col < boardWidth; col++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if (pieceArray[col, row] == null)
+                {
+                    Vector2 tempPosn = new Vector2(col, row);
+                    int pieceToUse = Random.Range(0, pieces.Length);
+                    GameObject piece = Instantiate(pieces[pieceToUse], tempPosn, Quaternion.identity);
+                    pieceArray[col, row] = piece;
+                }
+            }
+        }
+    }
+    
+    bool MatchesOnBoard()
+    {
+        Debug.Log("In MatchesOnBoard");
+
+        for (int col = 0; col < boardWidth; col++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if (pieceArray[col, row] != null)
+                {
+                    if(pieceArray[col, row].GetComponent<Piece>().isMatched)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    IEnumerator RefillBoard()
+    {
+        Debug.Log("In RefillBoard");
+
+        ReplenishPieces();
+        yield return new WaitForSeconds(refillDelay);
+
+        while(MatchesOnBoard())
+        {
+            yield return new WaitForSeconds(refillDelay);
+            DestroyAllMatches();
+        }
     }
 }

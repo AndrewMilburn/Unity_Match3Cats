@@ -33,6 +33,8 @@ public class Piece : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("In Piece:Start");
+
         board = FindObjectOfType<Board>();
         targetCol = (int)transform.position.x;
         targetRow = (int)transform.position.y;
@@ -45,6 +47,7 @@ public class Piece : MonoBehaviour
 
     private void Update()
     {
+
         if (isMatched)
         {
             SpriteRenderer pieceSprite = GetComponent<SpriteRenderer>();
@@ -85,12 +88,16 @@ public class Piece : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log("In MouseDown");
+
         firstTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(firstTouchPosn);
     }
 
     private void OnMouseUp()
     {
+        Debug.Log("In MouseUp");
+
         finalTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(finalTouchPosn);
 
@@ -102,6 +109,8 @@ public class Piece : MonoBehaviour
 
     private void CalculateAngle()
     {
+        Debug.Log("In CalculateAngle");
+
         swipeAngle = Mathf.Atan2(finalTouchPosn.y - firstTouchPosn.y, finalTouchPosn.x - firstTouchPosn.x) * 180 / Mathf.PI;
         Debug.Log(swipeAngle);
         MovePieces();
@@ -109,6 +118,8 @@ public class Piece : MonoBehaviour
 
     void MovePieces()
     {
+        Debug.Log("In MovePieces");
+
         if (swipeAngle > -45 && swipeAngle <= 45 && pieceCol < board.boardWidth - 1)
         {  // Right Swipe
             swapPiece = board.pieceArray[pieceCol + 1, pieceRow];
@@ -146,6 +157,8 @@ public class Piece : MonoBehaviour
 
     IEnumerator CheckMove()
     {
+        Debug.Log("In CheckMove");
+
         yield return new WaitForSeconds(checkDelay);
         if(swapPiece != null)
         {
