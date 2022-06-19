@@ -28,5 +28,26 @@ public class Piece : MonoBehaviour
     int previousColumn;
     int previousRow;
 
-    
+
+    private void OnMouseDown()
+    {
+        //Debug.Log("In Piece:OnMouseDown");
+        firstTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Debug.Log(firstTouchPosn);
+    }
+
+    private void OnMouseUp()
+    {
+        //Debug.Log("In Piece:OnMouseUp");
+        finalTouchPosn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Debug.Log(finalTouchPosn);
+        CalculateAngle();
+    }
+
+    void CalculateAngle()
+    {
+        Debug.Log("In Piece:CalculateAngle");
+        swipeAngle = Mathf.Atan2(finalTouchPosn.y - firstTouchPosn.y, finalTouchPosn.x - firstTouchPosn.x) * 180 / Mathf.PI;
+        Debug.Log(swipeAngle);
+    }
 }
