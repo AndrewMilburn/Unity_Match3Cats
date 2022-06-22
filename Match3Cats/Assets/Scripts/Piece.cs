@@ -47,11 +47,25 @@ public class Piece : MonoBehaviour
             transform.position = tempPosn;
             moveTime += Time.deltaTime;
         }
-        else
+        else if(targetCol != pieceCol)
         {
             tempPosn = new Vector2(targetCol, targetRow);
             transform.position = tempPosn;
             pieceCol = targetCol;
+            board.pieceArray[pieceCol, pieceRow] = this.gameObject;
+            moveTime = 0f;
+        }
+        if (Mathf.Abs(targetRow - transform.position.y) > 0.01f)
+        {
+            tempPosn = new Vector2(pieceCol, Mathf.Lerp((float)pieceRow, (float)targetRow, moveTime / timeToSwap));
+            transform.position = tempPosn;
+            moveTime += Time.deltaTime;
+        }
+        else if(targetRow != pieceRow)
+        {
+            tempPosn = new Vector2(targetCol, targetRow);
+            transform.position = tempPosn;
+            pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
             moveTime = 0f;
         }
