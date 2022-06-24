@@ -30,17 +30,24 @@ public class Piece : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("In Piece:Start");
+        //Debug.Log("In Piece:Start");
         board = FindObjectOfType<Board>();
         targetCol = (int)transform.position.x;
         targetRow = (int)transform.position.y;
         pieceCol = targetCol;
         pieceRow = targetRow;
+        findMatches = FindObjectOfType<FindMatches>();
     }
 
     private void Update()
     {
-        Debug.Log("In Piece:Update");
+        //Debug.Log("In Piece:Update");
+        //findMatches.FindAllMatches();
+        if(isMatched)
+        {
+            SpriteRenderer pieceSprite = GetComponent<SpriteRenderer>();
+            pieceSprite.color = new Color(1f, 1f, 1f, 1f);
+        }
         if (Mathf.Abs(targetCol - transform.position.x) > 0.01f)
         {
             tempPosn = new Vector2(Mathf.Lerp((float)pieceCol, (float)targetCol, moveTime / timeToSwap), pieceRow);
@@ -54,6 +61,7 @@ public class Piece : MonoBehaviour
             pieceCol = targetCol;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
             moveTime = 0f;
+            findMatches.FindAllMatches();
         }
         if (Mathf.Abs(targetRow - transform.position.y) > 0.01f)
         {
@@ -68,6 +76,7 @@ public class Piece : MonoBehaviour
             pieceRow = targetRow;
             board.pieceArray[pieceCol, pieceRow] = this.gameObject;
             moveTime = 0f;
+            findMatches.FindAllMatches();
         }
     }
 
