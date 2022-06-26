@@ -36,6 +36,8 @@ public class Piece : MonoBehaviour
         targetRow = (int)transform.position.y;
         pieceCol = targetCol;
         pieceRow = targetRow;
+        previousColumn = pieceCol;
+        previousRow = pieceRow;
         findMatches = FindObjectOfType<FindMatches>();
     }
 
@@ -100,7 +102,7 @@ public class Piece : MonoBehaviour
 
     void CalculateAngle()
     {
-        Debug.Log("In Piece:CalculateAngle");
+        //Debug.Log("In Piece:CalculateAngle");
         swipeAngle = Mathf.Atan2(finalTouchPosn.y - firstTouchPosn.y, finalTouchPosn.x - firstTouchPosn.x) * 180 / Mathf.PI;
         Debug.Log(swipeAngle);
         MovePieces();
@@ -109,33 +111,62 @@ public class Piece : MonoBehaviour
     void MovePieces()
     {
         Debug.Log("In Piece:MovePieces");
-        if (swipeAngle > -45 && swipeAngle <= 45 && pieceCol < board.boardWidth)    // Right Swipe
+        if (swipeAngle > -45 && swipeAngle <= 45 && pieceCol < board.boardWidth - 1)    // Right Swipe
         {
-            Debug.Log("Swipe Right");
+            //Debug.Log("Swipe Right");
             swapPiece = board.pieceArray[pieceCol + 1, pieceRow];
             swapPiece.GetComponent<Piece>().targetCol = pieceCol;
             targetCol = pieceCol + 1;
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && pieceRow < board.boardHeight)    // Up Swipe
+        else if (swipeAngle > 45 && swipeAngle <= 135 && pieceRow < board.boardHeight - 1)    // Up Swipe
         {
-            Debug.Log("Swipe Up");
+            //Debug.Log("Swipe Up");
             swapPiece = board.pieceArray[pieceCol, pieceRow + 1];
             swapPiece.GetComponent<Piece>().targetRow = pieceRow;
             targetRow = pieceRow + 1;
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && pieceCol > 0)    // Left Swipe
         {
-            Debug.Log("Swipe Left");
+            //Debug.Log("Swipe Left");
             swapPiece = board.pieceArray[pieceCol - 1, pieceRow];
             swapPiece.GetComponent<Piece>().targetCol = pieceCol;
             targetCol = pieceCol - 1;
         }
         else if (swipeAngle <= -45 && swipeAngle > -135 && pieceRow > 0)    // Down Swipe
         {
-            Debug.Log("Swipe Down");
+            //Debug.Log("Swipe Down");
             swapPiece = board.pieceArray[pieceCol, pieceRow - 1];
             swapPiece.GetComponent<Piece>().targetRow = pieceRow;
             targetRow = pieceRow - 1;
         }
+        StartCoroutine(CoCheckMove());
+    }
+
+    IEnumerator CoCheckMove()
+    {
+        yield return new WaitForSeconds(checkDelay);
+        Debug.Log("in Piece:CheckMove");
+        if(swapPiece != null)
+        {
+            if(!isMatched && !swapPiece.GetComponent<Piece>().isMatched)
+            {
+                Debug.Log("Swap Piece: " + swapPiece.GetComponent<Piece>().name);
+                Debug.Log("This Piece: " + name);
+                
+                swapPiece.GetComponent<Piece>().targetCol = pieceCol;
+                swapPiece.GetComponent<Piece>().targetRow = pieceRow;
+                targetRow = previousRow;
+                targetCol = previousColumn;
+            }
+            else
+            {
+                swapPiece.GetComponent<Piece>().previousColumn = swapPiece.GetComponent<Piece>().pieceCol;
+                swapPiece.GetComponent<Piece>().previousRow = swapPiece.GetComponent<Piece>().pieceRow;
+                previousRow = pieceRow;
+                previousColumn = pieceCol;
+            }
+            swapPiece = null;
+        }
     }
 }
+

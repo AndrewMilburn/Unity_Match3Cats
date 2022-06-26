@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMatches: []
-  findMatchDelay: 0.5
+  findMatchDelay: 0.2
 --- !u!4 &1811389981
 Transform:
   m_ObjectHideFlags: 0
