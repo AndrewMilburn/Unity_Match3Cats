@@ -35,7 +35,7 @@ public class FindMatches : MonoBehaviour
                                 leftPiece.GetComponent<Piece>().isMatched = true;
                                 rightPiece.GetComponent<Piece>().isMatched = true;
                                 currentPiece.GetComponent<Piece>().isMatched = true;
-                                Debug.Log(currentPiece.tag + " is Matched");
+                                //Debug.Log(currentPiece.tag + " is Matched");
                             }
                         }
                     }
@@ -50,7 +50,7 @@ public class FindMatches : MonoBehaviour
                                 upPiece.GetComponent<Piece>().isMatched = true;
                                 downPiece.GetComponent<Piece>().isMatched = true;
                                 currentPiece.GetComponent<Piece>().isMatched = true;
-                                Debug.Log(currentPiece.tag + " is Matched");
+                                //Debug.Log(currentPiece.tag + " is Matched");
                             }
                         }
                     }

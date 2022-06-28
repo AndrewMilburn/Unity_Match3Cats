@@ -164,6 +164,7 @@ public class Piece : MonoBehaviour
                 swapPiece.GetComponent<Piece>().previousRow = swapPiece.GetComponent<Piece>().pieceRow;
                 previousRow = pieceRow;
                 previousColumn = pieceCol;
+                board.DestroyAllMatches();
             }
             swapPiece = null;
         }
