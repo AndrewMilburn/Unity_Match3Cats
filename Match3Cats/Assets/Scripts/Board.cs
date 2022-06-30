@@ -46,7 +46,7 @@ public class Board : MonoBehaviour
                 maxIterations = 0;
                 GameObject piece = Instantiate(pieces[pieceToUse], tempPosn, Quaternion.identity);
                 piece.transform.parent = transform;
-                piece.name = "Dot(" + column + ", " + row + ")";
+                piece.name = piece.tag + " Piece";
                 pieceArray[column, row] = piece;
                 //Debug.Log(piece.name + pieceArray[column, row].GetComponent<Piece>().tag);
             }
@@ -126,6 +126,7 @@ public class Board : MonoBehaviour
                 else if(nullCount > 0)
                 {
                     pieceArray[column, row].GetComponent<Piece>().targetRow -= nullCount;
+                    pieceArray[column, row] = null;
                 }
             }
             nullCount = 0;
