@@ -109,6 +109,28 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(CoDecreaseRow());
+    }
+
+    IEnumerator CoDecreaseRow()
+    {
+        int nullCount = 0;
+        for (int column = 0; column < boardWidth; column++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if (pieceArray[column, row] == null)
+                {
+                    nullCount++;
+                }
+                else if(nullCount > 0)
+                {
+                    pieceArray[column, row].GetComponent<Piece>().targetRow -= nullCount;
+                }
+            }
+            nullCount = 0;
+        }
+        yield return new WaitForSeconds(decreaseRowDelay);
     }
 }
 
