@@ -119,6 +119,6 @@ MonoBehaviour:
   pieceRow: 0
   timeToSwap: 0.2
   moveTime: 0
-  checkDelay: 0.6
+  checkDelay: 1
   targetCol: 0
   targetRow: 0

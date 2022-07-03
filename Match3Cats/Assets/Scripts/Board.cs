@@ -114,6 +114,7 @@ public class Board : MonoBehaviour
 
     IEnumerator CoDecreaseRow()
     {
+        Debug.Log("In Board:CoDecreaseRow");
         int nullCount = 0;
         for (int column = 0; column < boardWidth; column++)
         {
@@ -132,6 +133,57 @@ public class Board : MonoBehaviour
             nullCount = 0;
         }
         yield return new WaitForSeconds(decreaseRowDelay);
+        StartCoroutine(CoRefillBoard());
+    }
+
+    void ReplenishPieces()
+    {
+        Debug.Log("In Board:ReplenishPieces");
+        for (int col = 0; col < boardWidth; col++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if (pieceArray[col, row] == null)
+                {
+                    Vector2 tempPosn = new Vector2(col, row);
+                    int pieceToUse = Random.Range(0, pieces.Length);
+                    Debug.Log("col: " + col + ", row: " + row);
+                    GameObject piece = Instantiate(pieces[pieceToUse], tempPosn, Quaternion.identity);
+                    pieceArray[col, row] = piece;
+                }
+            }
+        }
+    }
+
+    bool MatchesOnBoard()
+    {
+        Debug.Log("In Board:MatchesOnBoard");
+        for (int col = 0; col < boardWidth; col++)
+        {
+            for (int row = 0; row < boardHeight; row++)
+            {
+                if (pieceArray[col, row] != null)
+                {
+                    if (pieceArray[col, row].GetComponent<Piece>().isMatched)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    IEnumerator CoRefillBoard()
+    {
+        Debug.Log("In Board:CoRefillBoard");
+        ReplenishPieces();
+        yield return new WaitForSeconds(refillDelay);
+        while(MatchesOnBoard())
+        {
+            yield return new WaitForSeconds(refillDelay);
+            DestroyAllMatches();
+        }
     }
 }
 
